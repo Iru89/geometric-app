@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Form} from "react-bootstrap";
-import {IProfile, ProfileState} from "../types";
+import {ProfileState} from "../types";
 
 interface IProps {
     profileState: ProfileState,

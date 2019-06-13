@@ -2,7 +2,6 @@ import {ThunkAction} from "redux-thunk";
 import {Action, Dispatch} from "redux";
 import {AppState} from "../store/indexStore";
 import {GeometricListActions, LIST_ERROR, LIST_REQUEST, LIST_SUCCESS} from "../types/geometricListTypes";
-import {userId} from "../jwtUtilities";
 import {Figure} from "../../typeFigures";
 
 function listRequest(): GeometricListActions {

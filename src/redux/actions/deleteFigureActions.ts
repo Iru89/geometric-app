@@ -6,10 +6,9 @@ import {
 } from "../types/geometricListTypes";
 import {ThunkAction} from "redux-thunk";
 import {AppState} from "../store/indexStore";
-import {Action, Dispatch} from "redux";
-import {updateTokens, userId} from "../jwtUtilities";
-import {showCreateFigure, showList} from "./visibilityFilterActions";
-import {logoutUser} from "./authActions";
+import {Action} from "redux";
+import {updateTokens} from "../jwtUtilities";
+import {showList} from "./visibilityFilterActions";
 
 function deleteFigureRequest(): GeometricListActions {
     return{
@@ -64,8 +63,8 @@ export function fetchDeleteFigure(figureId: any): ThunkAction<void, AppState, nu
         const response = await fetch('http://localhost:8081/api/geometric/figure', config);
 
         if (!response.ok) {
-            // const text = await response.text();
-            // dispatch(deleteFigureError(text));
+            const text = await response.text();
+            dispatch(deleteFigureError(text));
         } else {
             const deleteFigureId: any = await response.json();
             dispatch(deleteFigureSuccess(deleteFigureId.id));

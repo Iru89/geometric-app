@@ -1,5 +1,4 @@
 import {Action} from "redux";
-import {Figure} from "../../typeFigures";
 import {IProfile} from "../../types";
 
 export const PROFILE_REQUEST = 'PROFILE_REQUEST';

@@ -15,15 +15,14 @@ const initialGeometricList: ListFiguresState = {
     listFigures: []
 };
 
-// The geometric reducer
 export function setGeometricList(state = initialGeometricList, action: GeometricListActions): ListFiguresState {
     switch (action.type) {
         // DURANT EL REQUEST PODRIEM POSSSAR UNA BARRA DE CARREGA
-        // case LIST_REQUEST:
-        //     return Object.assign({}, state,{
-        //         isFetching: action.isFetching,
-        //         listFigures: []
-        //     });
+        case LIST_REQUEST:
+            return Object.assign({}, state,{
+                isFetching: action.isFetching,
+                listFigures: []
+            });
         case LIST_SUCCESS:
             return Object.assign({}, state,{
                 isFetching: action.isFetching,

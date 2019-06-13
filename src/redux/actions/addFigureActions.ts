@@ -7,7 +7,7 @@ import {
 import {ThunkAction} from "redux-thunk";
 import {AppState} from "../store/indexStore";
 import {Action} from "redux";
-import {updateTokens, userId} from "../jwtUtilities";
+import {updateTokens} from "../jwtUtilities";
 import {Figure} from "../../typeFigures";
 import {showList} from "./visibilityFilterActions";
 
@@ -65,8 +65,8 @@ export function fetchFigure(figure: Figure): ThunkAction<void, AppState, null, A
         const response = await fetch('http://localhost:8081/api/geometric/figure', config);
 
         if (!response.ok) {
-            // const text = await response.text();
-            // dispatch(errorSaveFigure(text));
+             const text = await response.text();
+             dispatch(errorSaveFigure(text));
             // dispatch(showCreateFigure())
         } else {
             const figureWithId: any = await response.json();

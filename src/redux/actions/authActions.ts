@@ -11,7 +11,6 @@ import {
 } from "../types/loginTypes";
 import {AppState} from "../store/indexStore";
 import {getListFigures} from "./listFigureActions";
-import {userId} from "../jwtUtilities";
 import {showList, showLogin} from "./visibilityFilterActions";
 import {getProfile} from "./profileActions";
 

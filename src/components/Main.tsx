@@ -1,7 +1,6 @@
 import * as React from "react";
 import Login from "./Login";
-import {loginUser} from "../redux/actions/authActions";
-import {AuthState, Credentials, IProfile, ListFiguresState, ProfileState, SignupState} from "../types";
+import {AuthState, ListFiguresState, ProfileState, SignupState} from "../types";
 import {
     SHOW_CREATE_FIGURE,
     SHOW_LIST,

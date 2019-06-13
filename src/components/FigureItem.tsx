@@ -4,8 +4,6 @@ import MyRect from "./MyRect";
 import {Figure, CIRCLE, RECT, REGULARPOLYGON, ELLIPSE} from "../typeFigures";
 import MyRegularPolygon from "./MyRegularPolygon";
 import MyEllipse from "./MyEllipse";
-import {Button} from "react-bootstrap";
-import {fetchDeleteFigure} from "../redux/actions/deleteFigureActions";
 
 interface IProps {
     figure: Figure
