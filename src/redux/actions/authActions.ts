@@ -144,7 +144,7 @@ export function fetchRefreshTokens(): ThunkAction<void, AppState, null, Action<s
     return async (dispatch: Dispatch) => {
         dispatch(requestRefresh());
 
-        const response = await fetch('http://localhost:8080/api/auth/refresh', config);
+        const response = await fetch('http://localhost:8080/api/setAuth/refresh', config);
 
         if (!response.ok) {
             const text = await response.text();

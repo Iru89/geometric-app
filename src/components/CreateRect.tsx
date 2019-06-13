@@ -4,9 +4,11 @@ import {Button, Col, Form} from "react-bootstrap";
 import {fetchFigure} from "../redux/actions/addFigureActions";
 import {Rect, RECT} from "../typeFigures";
 import {ChromePicker} from "react-color";
+import {ThunkDispatch} from "redux-thunk";
+import {AnyAction} from "redux";
 
 interface IProps {
-    dispatch: any
+    dispatch: ThunkDispatch<any, any, AnyAction>,
 }
 
 interface IState {

@@ -1,6 +1,6 @@
 import * as React from "react";
 import Login from "./Login";
-import {AuthState, ListFiguresState, ProfileState, SignupState} from "../types";
+import {AuthState, FilterState} from "../types";
 import {
     SHOW_CREATE_FIGURE,
     SHOW_LIST,
@@ -14,29 +14,29 @@ import SignUpFormContainer from "./MySignUpFormik";
 import Profile from "./Profile";
 import {AnyAction} from "redux";
 import {ThunkDispatch} from "redux-thunk";
+import {AppState} from "../redux/store/indexStore";
+import {connect} from "react-redux";
 
 
 interface IProps{
-    visibilityFilter: string,
     authState: AuthState,
-    signupState: SignupState,
-    geometricListState: ListFiguresState,
-    profileState: ProfileState,
+    visibilityFilterState: FilterState,
     dispatch: ThunkDispatch<any, any, AnyAction>,
 }
 
 const Main: React.FunctionComponent<IProps> = (props: IProps) => {
 
-    const {dispatch, authState, signupState, visibilityFilter, geometricListState, profileState} = props;
+    const {dispatch, authState} = props;
+    const {visibilityFilter} = props.visibilityFilterState;
 
     switch (visibilityFilter) {
         case SHOW_LOGIN:
+
             return (
                 <div>
                     <hr/>
                     {!authState.isAuthenticated &&
-                    <Login authState={authState}
-                           dispatch={dispatch}/>
+                    <Login/>
                     }
                     <hr/>
                 </div>
@@ -46,8 +46,7 @@ const Main: React.FunctionComponent<IProps> = (props: IProps) => {
                 <div>
                     <hr/>
                     {!authState.isAuthenticated &&
-                       <SignUpFormContainer signupState={signupState}
-                                            dispatch={dispatch}/>
+                       <SignUpFormContainer/>
                     }
                     <hr/>
                 </div>
@@ -64,8 +63,7 @@ const Main: React.FunctionComponent<IProps> = (props: IProps) => {
             return(
                 <div>
                     <hr/>
-                    <FigureList geometricListState={geometricListState}
-                                dispatch={dispatch}/>
+                    <FigureList/>
                     <hr/>
                 </div>
             );
@@ -73,7 +71,7 @@ const Main: React.FunctionComponent<IProps> = (props: IProps) => {
                 return(
                     <div>
                         <hr/>
-                        <Profile profileState={profileState}/>
+                        <Profile/>
                         <hr/>
                     </div>
                 );
@@ -81,4 +79,9 @@ const Main: React.FunctionComponent<IProps> = (props: IProps) => {
             return null;
     }
 };
-export default Main;
+const mapStateToProps = (state: AppState) => ({
+    authState: state.getAuth,
+    visibilityFilterState: state.getVisibilityFilter
+});
+
+export default connect(mapStateToProps)(Main);

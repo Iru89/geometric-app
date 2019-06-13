@@ -29,7 +29,7 @@ export interface ProfileState {
 
 interface IPersonalData {
     firstName: string,
-    lastName: string,
+        lastName: string,
 }
 
 export interface IProfile {

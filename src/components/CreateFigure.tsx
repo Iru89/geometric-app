@@ -1,13 +1,15 @@
 import * as React from 'react';
 import {Col, Form} from "react-bootstrap";
 import GeometricValues from "./GeometricValues";
+import {ThunkDispatch} from "redux-thunk";
+import {AnyAction} from "redux";
 
 interface IState {
     type: string,
 }
 
 interface IProps {
-    dispatch: any,
+    dispatch: ThunkDispatch<any, any, AnyAction>,
 }
 
 class CreateFigure extends React.Component<IProps, IState>{

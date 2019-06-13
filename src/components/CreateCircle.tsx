@@ -5,9 +5,11 @@ import {Circle, CIRCLE} from "../typeFigures";
 import {fetchFigure} from "../redux/actions/addFigureActions";
 import {ChromePicker} from 'react-color';
 import '../styles/App.css';
+import {ThunkDispatch} from "redux-thunk";
+import {AnyAction} from "redux";
 
 interface IProps {
-    dispatch: any,
+    dispatch: ThunkDispatch<any, any, AnyAction>,
 }
 
 interface IState {

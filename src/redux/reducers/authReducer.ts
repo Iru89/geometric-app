@@ -20,8 +20,8 @@ const initialAuth: AuthState = {
     loginMessage: '',
 };
 
-// The auth reducer.
- export function auth(state = initialAuth, action: LoginActions): AuthState {
+// The setAuth reducer.
+ export function setAuth(state = initialAuth, action: LoginActions): AuthState {
     switch (action.type) {
         case LOGIN_REQUEST:
             return Object.assign({}, state, {

@@ -4,10 +4,12 @@ import CreateRect from "./CreateRect";
 import {CIRCLE, ELLIPSE, RECT, REGULARPOLYGON} from "../typeFigures";
 import CreateRegularPolygon from "./CreateRegularPolygon";
 import CreateEllipse from "./CreateEllipse";
+import {ThunkDispatch} from "redux-thunk";
+import {AnyAction} from "redux";
 
 interface IProps {
     type: string,
-    dispatch: any,
+    dispatch: ThunkDispatch<any, any, AnyAction>,
 }
 
 const GeometricValues: React.FunctionComponent<IProps> = (props:IProps) => {

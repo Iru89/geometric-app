@@ -7,7 +7,7 @@ const initialSignup: SignupState = {
 };
 
 // The signupState reducer
-export function signup(state= initialSignup, action: SignupActionTypes): SignupState {
+export function setSignup(state= initialSignup, action: SignupActionTypes): SignupState {
     switch (action.type) {
         case SIGNUP_REQUEST:
             return Object.assign({}, state,{

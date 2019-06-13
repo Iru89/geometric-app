@@ -67,7 +67,6 @@ export function fetchFigure(figure: Figure): ThunkAction<void, AppState, null, A
         if (!response.ok) {
              const text = await response.text();
              dispatch(errorSaveFigure(text));
-            // dispatch(showCreateFigure())
         } else {
             const figureWithId: any = await response.json();
             dispatch(successSaveFigure(figureWithId));

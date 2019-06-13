@@ -4,6 +4,8 @@ import {Button, Form} from "react-bootstrap";
 import {loginUser} from "../redux/actions/authActions";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
+import {AppState} from "../redux/store/indexStore";
+import {connect} from "react-redux";
 
 interface IProps {
     authState: AuthState,
@@ -18,7 +20,7 @@ const Login: React.FunctionComponent<IProps> = (props: IProps) => {
     };
 
     const {dispatch} = props;
-    const loginMessage = props.authState.loginMessage;
+    const {loginMessage} = props.authState;
 
     return (
         <div>
@@ -46,5 +48,8 @@ const Login: React.FunctionComponent<IProps> = (props: IProps) => {
     );
 
 };
+const mapStateToProps = (state: AppState) => ({
+   authState: state.getAuth
+});
 
-export default Login;
+export default connect (mapStateToProps)(Login);

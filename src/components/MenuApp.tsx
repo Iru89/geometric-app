@@ -3,14 +3,18 @@ import {Navbar, Nav, Button} from "react-bootstrap";
 import {showCreateFigure, showList, showLogin, showProfile, showSignup} from "../redux/actions/visibilityFilterActions";
 import Logout from "./Logout";
 import {logoutUser} from "../redux/actions/authActions";
+import {AppState} from "../redux/store/indexStore";
+import {AuthState} from "../types";
+import {connect} from "react-redux";
 
 interface IProps {
-    isAuthenticated: boolean,
+    authState: AuthState,
     dispatch: any,
 }
 
 const MenuApp: React.FunctionComponent <IProps>= (props:IProps) => {
-    const {dispatch, isAuthenticated} = props;
+    const {dispatch} = props;
+    const {isAuthenticated} = props.authState;
 
     if(isAuthenticated){
         return(
@@ -29,7 +33,6 @@ const MenuApp: React.FunctionComponent <IProps>= (props:IProps) => {
                             </Nav.Link>
                             <Nav.Link>
                                 <Button variant="primary" onClick={() => {
-                                    // dispatch(getProfile());
                                     dispatch(showProfile())}
                                 }>Profile</Button>
                             </Nav.Link>
@@ -56,6 +59,10 @@ const MenuApp: React.FunctionComponent <IProps>= (props:IProps) => {
             </div>
         )
     }
-}
+};
 
-export default MenuApp;
+const mapStateToProps = (state: AppState) => ({
+    authState: state.getAuth
+});
+
+export default connect (mapStateToProps)(MenuApp);

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {Form} from "react-bootstrap";
 import {ProfileState} from "../types";
+import {AppState} from "../redux/store/indexStore";
+import {connect} from "react-redux";
 
 interface IProps {
     profileState: ProfileState,
@@ -46,4 +48,7 @@ const Profile: React.FunctionComponent<IProps> = (props: IProps) => {
     )
 };
 
-export default Profile;
+const mapStateToProps = (state: AppState) => ({
+    profileState: state.getProfile
+});
+export default connect(mapStateToProps)(Profile);

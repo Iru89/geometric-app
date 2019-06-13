@@ -4,7 +4,7 @@ import {
     GeometricListActions,
     LIST_ERROR,
     LIST_REQUEST,
-    LIST_SUCCESS,
+    LIST_SUCCESS, SAVE_FIGURE_ERROR, SAVE_FIGURE_REQUEST,
     SAVE_FIGURE_SUCCESS
 } from "../types/geometricListTypes";
 import {ListFiguresState} from "../../types";
@@ -33,6 +33,10 @@ export function setGeometricList(state = initialGeometricList, action: Geometric
                 isFetching: action.isFetching,
                 listFigures: []
             });
+        case SAVE_FIGURE_REQUEST:
+            return Object.assign({}, state,{
+                isFetching: action.isFetching,
+            });
         case SAVE_FIGURE_SUCCESS:
             return Object.assign({}, state,{
                 isFetching: action.isFetching,
@@ -40,6 +44,11 @@ export function setGeometricList(state = initialGeometricList, action: Geometric
                     ...state.listFigures,
                     action.figure
                 ]
+            });
+        case SAVE_FIGURE_ERROR:
+            return Object.assign({}, state,{
+                isFetching: action.isFetching,
+                message: action.message
             });
         case DELETE_FIGURE_SUCCESS:
             return Object.assign({}, state,{

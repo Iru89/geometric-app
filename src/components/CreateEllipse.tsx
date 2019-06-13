@@ -4,9 +4,11 @@ import {fetchFigure} from "../redux/actions/addFigureActions";
 import {Ellipse, ELLIPSE} from "../typeFigures";
 import MyEllipse from "./MyEllipse";
 import {ChromePicker} from "react-color";
+import {ThunkDispatch} from "redux-thunk";
+import {AnyAction} from "redux";
 
 interface IProps {
-    dispatch: any,
+    dispatch: ThunkDispatch<any, any, AnyAction>,
 }
 
 interface IState {

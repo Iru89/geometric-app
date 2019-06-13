@@ -4,6 +4,8 @@ import {Button, Col, Form} from "react-bootstrap";
 import {Formik, FormikProps} from "formik";
 import {SignupState, SignupUser} from "../types";
 import {signupUser} from "../redux/actions/signupActions";
+import {connect} from "react-redux";
+import {AppState} from "../redux/store/indexStore";
 
 interface IProps {
     dispatch: any,
@@ -20,7 +22,8 @@ const initialValues: SignupUser = {
 
 const SignUpFormContainer: React.FunctionComponent<IProps> = (props: IProps) => {
 
-    const signupMessage = props.signupState.signupMessage;
+    const {signupMessage} = props.signupState;
+    const {dispatch} = props;
 
     return (
         <div>
@@ -28,7 +31,7 @@ const SignUpFormContainer: React.FunctionComponent<IProps> = (props: IProps) => 
                 initialValues={initialValues}
                 validate={validate(getYupValidationSchema)}
                 onSubmit={(values: SignupUser, { setSubmitting }: any) => {
-                    props.dispatch(signupUser(values));
+                    dispatch(signupUser(values));
                     setSubmitting(false);
                 }}
                 render={SignUpForm}
@@ -37,8 +40,10 @@ const SignUpFormContainer: React.FunctionComponent<IProps> = (props: IProps) => 
         </div>
     );
 };
-
-export default SignUpFormContainer;
+const mapStateToProps = (state: AppState) => ({
+   signupState: state.getSignup
+});
+export default connect (mapStateToProps)(SignUpFormContainer);
 
 function SignUpForm (props: FormikProps<SignupUser>): any {
 

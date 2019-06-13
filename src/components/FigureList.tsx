@@ -5,10 +5,14 @@ import '../styles/App.css';
 import {fetchDeleteFigure} from "../redux/actions/deleteFigureActions";
 import {Button} from "react-bootstrap";
 import {ListFiguresState} from "../types";
+import {AppState} from "../redux/store/indexStore";
+import {connect} from "react-redux";
+import {ThunkDispatch} from "redux-thunk";
+import {AnyAction} from "redux";
 
 interface IProps {
     geometricListState: ListFiguresState,
-    dispatch: any,
+    dispatch: ThunkDispatch<any,any,AnyAction>,
 }
 
 const FigureList: React.FunctionComponent<IProps> = (props: IProps) => {
@@ -33,4 +37,8 @@ const FigureList: React.FunctionComponent<IProps> = (props: IProps) => {
     );
 };
 
-export default FigureList;
+const mapStateToProps = (state: AppState) => ({
+    geometricListState: state.getGeometricList
+});
+
+export default connect(mapStateToProps)(FigureList);
