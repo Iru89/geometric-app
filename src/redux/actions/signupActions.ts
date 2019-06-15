@@ -45,7 +45,7 @@ export function signupUser(signupInfo: SignupUser): ThunkAction<void, AppState, 
 
         dispatch(requestSignup());
 
-        const response = await fetch('http://localhost:8080/api/auth/setSignup', config);
+        const response = await fetch('http://localhost:8080/api/auth/signup', config);
         const message = await response.text();
         if (!response.ok) {
             dispatch(signupError(message));
