@@ -6,94 +6,122 @@ import {Rect, RECT} from "../typeFigures";
 import {ChromePicker} from "react-color";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
+import {TmpFigureState} from "../types";
+import {setTmpFigure} from "../redux/actions/editFigureActions";
+import {AppState} from "../redux/store/indexStore";
+import {connect} from "react-redux";
 
 interface IProps {
+    tmpFigure: TmpFigureState,
     dispatch: ThunkDispatch<any, any, AnyAction>,
 }
 
-interface IState {
-    color: string,
-    width: number,
-    height: number,
-}
+const CreateRect: React.FunctionComponent <IProps> = (props: IProps) => {
 
-class CreateRect extends React.Component <IProps, IState>{
-    constructor(props:IProps){
-        super(props);
-        this.state = {
-            color: "",
-            width: 0,
-            height: 0,
-        }
+    const {tmpFigure, dispatch} = props;
+
+    let tmpWidth = 0;
+    let tmpHeight = 0;
+    if(tmpFigure.figure.type === RECT && tmpFigure.figure.width !== null && tmpFigure.figure.height !== null){
+        tmpWidth = tmpFigure.figure.width;
+        tmpHeight = tmpFigure.figure.height;
     }
 
-    render(): React.ReactNode {
-
-        const {dispatch} = this.props;
-
-        const figure: Rect = {
-            id: undefined,
-            type: RECT,
-            color: "",
-            width: 0,
-            height: 0,
-        };
-
-            return (
-                <div>
-
-                    <Form>
-                        <Form.Group as={Col} md="10">
-                            <Form.Label >Width: </Form.Label>
-                            <Form.Control type="number"
-                                          min="0"
-                                          placeholder="Enter a width"
-                                          onChange={(event: any) => {
-                                              this.setState(
-                                                  {width : parseInt(event.target.value)});
-                                          }}
-                                          autoFocus={true} />
-                        </Form.Group>
-                        <Form.Group as={Col} md="10">
-                            <Form.Label>Height: </Form.Label>
-                            <Form.Control type = "number"
-                                          min="0"
-                                          placeholder="Enter a height"
-                                          onChange={(event: any) => {
-                                              this.setState(
-                                                  {height : parseInt(event.target.value)});
-                                          }}/>
-                        </Form.Group >
-                        <Form.Group as={Col} md="10">
-                            <Form.Label>Color Figure</Form.Label>
-                            <ChromePicker
-                                color={this.state.color}
-                                disableAlpha={true}
-                                onChange={(color: any) => {
-                                    this.setState({color: color.hex.toString()});
-                                }}
-                            />
-                        </Form.Group>
-                    </Form>
-
-                    <div>
-                        <MyRect width={this.state.width} height={this.state.height} color={this.state.color}/>
-                        <Button variant="primary"
-                                onClick={() => {
-                                    figure.color = this.state.color;
-                                    figure.height = this.state.height;
-                                    figure.width = this.state.width;
-                                    dispatch(fetchFigure(figure));
-                                }}>
-                            Save
-                        </Button>
-                    </div>
-
-                </div>
-            );
-        }
+    let tmpColor = "";
+    if(tmpFigure.figure.color !== ""){
+        tmpColor = tmpFigure.figure.color;
+    }
 
 
-}
+    let rect: Rect = {
+        id: undefined,
+        type: RECT,
+        color: tmpColor,
+        width: tmpWidth,
+        height: tmpHeight,
+    };
 
-export default CreateRect
+    return (
+        <div>
+
+            <Form>
+                <Form.Group as={Col} md="10">
+                    <Form.Label >Width: (max 150)</Form.Label>
+                    <Form.Control type="number"
+                                  min="0"
+                                  max = "150"
+                                  placeholder="Enter a width"
+                                  onChange={(event: any) => {
+                                      let number = parseInt(event.target.value);
+                                      if (number>150){
+                                          number = 150;
+                                      }
+                                      rect= {
+                                          id: undefined,
+                                          type: RECT,
+                                          color: tmpColor,
+                                          width: number,
+                                          height: tmpHeight,
+                                      };
+                                      dispatch(setTmpFigure(rect));
+                                  }}
+                                  autoFocus={true} />
+                </Form.Group>
+                <Form.Group as={Col} md="10">
+                    <Form.Label>Height: (max 150)</Form.Label>
+                    <Form.Control type = "number"
+                                  min="0"
+                                  max = "150"
+                                  placeholder="Enter a height"
+                                  onChange={(event: any) => {
+                                      let number = parseInt(event.target.value);
+                                      if (number>150){
+                                          number = 150;
+                                      }
+                                      rect= {
+                                          id: undefined,
+                                          type: RECT,
+                                          color: tmpColor,
+                                          width: tmpWidth,
+                                          height: number,
+                                      };
+                                      dispatch(setTmpFigure(rect));
+                                  }}/>
+                </Form.Group >
+                <Form.Group as={Col} md="10">
+                    <Form.Label>Color Figure</Form.Label>
+                    <ChromePicker
+                        color={tmpColor}
+                        disableAlpha={true}
+                        onChange={(color: any) => {
+                            rect= {
+                                id: undefined,
+                                type: RECT,
+                                color: color.hex.toString(),
+                                width: tmpWidth,
+                                height: tmpHeight,
+                            };
+                            dispatch(setTmpFigure(rect));
+                        }}
+                    />
+                </Form.Group>
+            </Form>
+
+            <div>
+                <MyRect width={rect.width} height={rect.height} color={rect.color}/>
+                <Button variant="primary"
+                        onClick={() => {
+                            dispatch(fetchFigure(rect));
+                        }}>
+                    Save
+                </Button>
+            </div>
+        </div>
+    );
+};
+
+const mapStateToProps= (state: AppState) => ({
+    tmpFigure: state.getTmpFigure,
+});
+
+export default connect (mapStateToProps)(CreateRect);

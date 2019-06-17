@@ -1,5 +1,6 @@
 import * as React from "react";
 import Login from "./Login";
+
 import {AuthState, FilterState} from "../types";
 import {
     SHOW_CREATE_FIGURE,
@@ -26,7 +27,7 @@ interface IProps{
 
 const Main: React.FunctionComponent<IProps> = (props: IProps) => {
 
-    const {dispatch, authState} = props;
+    const {authState} = props;
     const {visibilityFilter} = props.visibilityFilterState;
 
     switch (visibilityFilter) {
@@ -55,7 +56,7 @@ const Main: React.FunctionComponent<IProps> = (props: IProps) => {
             return(
                 <div>
                     <hr/>
-                    <CreateFigure dispatch={dispatch}/>
+                    <CreateFigure/>
                     <hr/>
                 </div>
             );

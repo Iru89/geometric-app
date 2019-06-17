@@ -10,6 +10,7 @@ import {Action} from "redux";
 import {updateTokens} from "../jwtUtilities";
 import {Figure} from "../../typeFigures";
 import {showList} from "./visibilityFilterActions";
+import {resetTmpFigure} from "./editFigureActions";
 
 
 function requestSaveFigure(): GeometricListActions {
@@ -70,6 +71,7 @@ export function fetchFigure(figure: Figure): ThunkAction<void, AppState, null, A
         } else {
             const figureWithId: any = await response.json();
             dispatch(successSaveFigure(figureWithId));
+            dispatch(resetTmpFigure());
             dispatch(showList());
         }
     }

@@ -3,48 +3,43 @@ import {Col, Form} from "react-bootstrap";
 import GeometricValues from "./GeometricValues";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
-
-interface IState {
-    type: string,
-}
+import {TmpFigureState} from "../types";
+import {AppState} from "../redux/store/indexStore";
+import {connect} from "react-redux";
+import {setType} from "../redux/actions/editFigureActions";
 
 interface IProps {
+    tmpFigure: TmpFigureState,
     dispatch: ThunkDispatch<any, any, AnyAction>,
 }
 
-class CreateFigure extends React.Component<IProps, IState>{
-    constructor(props: IProps){
-        super(props);
-        this.state = {
-            type: ""
-        }
-    }
+const CreateFigure: React.FunctionComponent <IProps> = (props: IProps) => {
+    const {dispatch} = props;
 
-    render(): React.ReactNode {
-
-        const {dispatch} = this.props;
-
-        return (
+    return (
+        <div>
             <div>
-                <div>
-                    <Form>
-                        <label>Select the type of Figure</label>
-                        <Form.Group as={Col} md="10">
-                            <Form.Control as="select"
-                                          onChange={(event: any) => this.setState({type: event.target.value})}>
-                                <option> </option>
-                                {/*<option>RECT</option>*/}
-                                <option>CIRCLE</option>
-                                <option>ELLIPSE</option>
-                                <option>REGULARPOLYGON</option>
-                            </Form.Control>
-                        </Form.Group>
-                    </Form>
-                </div>
-                <GeometricValues type={this.state.type} dispatch={dispatch}/>
+                <Form>
+                    <label>Select the type of Figure</label>
+                    <Form.Group as={Col} md="10">
+                        <Form.Control as="select"
+                                      onChange={(event: any) => dispatch(setType(event.target.value))}>
+                            <option> </option>
+                            {/*<option>RECT</option>*/}
+                            <option>CIRCLE</option>
+                            <option>ELLIPSE</option>
+                            <option>REGULARPOLYGON</option>
+                        </Form.Control>
+                    </Form.Group>
+                </Form>
             </div>
-        );
-    }
+            <GeometricValues/>
+        </div>
+    );
+};
 
-}
-export default CreateFigure
+const mapStateToProps= (state: AppState) => ({
+    tmpFigure: state.getTmpFigure,
+});
+
+export default connect (mapStateToProps)(CreateFigure);

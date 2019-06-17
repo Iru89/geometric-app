@@ -4,103 +4,122 @@ import {Button, Col, Form} from "react-bootstrap";
 import {fetchFigure} from "../redux/actions/addFigureActions";
 import {REGULARPOLYGON, RegularPolygon} from "../typeFigures";
 import {ChromePicker} from "react-color";
+import {AppState} from "../redux/store/indexStore";
+import {connect} from "react-redux";
+import {TmpFigureState} from "../types";
+import {ThunkDispatch} from "redux-thunk";
+import {AnyAction} from "redux";
+import {setTmpFigure} from "../redux/actions/editFigureActions";
 
 interface IProps {
-    dispatch: any,
+    tmpFigure: TmpFigureState,
+    dispatch: ThunkDispatch<any, any, AnyAction>,
 }
 
-interface IState {
-    color: string,
-    sides: number,
-    radius: number,
-}
+const CreateRegularPolygon: React.FunctionComponent <IProps> = (props: IProps) => {
 
-class CreateRegularPolygon extends React.Component<IProps, IState> {
+    const {tmpFigure, dispatch} = props;
 
-    constructor(props: IProps) {
-        super(props);
-        this.state = {
-            color: "",
-            sides: 0,
-            radius: 0,
-        }
+    let tmpSides = 0;
+    let tmpRadius = 0;
+    if(tmpFigure.figure.type === REGULARPOLYGON && tmpFigure.figure.sides !== null && tmpFigure.figure.radius !== null){
+        tmpSides = tmpFigure.figure.sides;
+        tmpRadius = tmpFigure.figure.radius;
     }
 
-    render(): React.ReactNode {
+    let tmpColor = "";
+    if(tmpFigure.figure.color !== ""){
+        tmpColor = tmpFigure.figure.color;
+    }
 
-        const {dispatch} = this.props;
+    let regularPolygon: RegularPolygon = {
+        id: undefined,
+        type: REGULARPOLYGON,
+        color: tmpColor,
+        sides: tmpSides,
+        radius: tmpRadius,
+    };
 
-        const figure: RegularPolygon = {
-            id: undefined,
-            type: REGULARPOLYGON,
-            color: "",
-            sides: 3,
-            radius: 0,
-        };
+    return (
+        <div>
 
-        return (
+            <Form>
+                <Form.Group as={Col} md="10">
+                    <Form.Label>Radius: (max 150)</Form.Label>
+                    <Form.Control type="number"
+                                  min="0"
+                                  max="150"
+                                  placeholder="Enter a radius"
+                                  onChange={(event: any) => {
+                                      let number = parseInt(event.target.value);
+                                      if (number>150){
+                                          number = 150;
+                                      }
+                                      regularPolygon = {
+                                          id: undefined,
+                                          type: REGULARPOLYGON,
+                                          color: tmpColor,
+                                          sides: tmpSides,
+                                          radius: number,
+                                      };
+                                      dispatch(setTmpFigure(regularPolygon));
+                                  }}
+                                  />
+                </Form.Group>
+                <Form.Group as={Col} md="10">
+                    <Form.Label>Sides: </Form.Label>
+                    <Form.Control type="number"
+                                  min="0"
+                                  placeholder="Enter sides"
+                                  onChange={(event: any) => {
+                                      regularPolygon = {
+                                          id: undefined,
+                                          type: REGULARPOLYGON,
+                                          color: tmpColor,
+                                          sides: parseInt(event.target.value),
+                                          radius: tmpRadius,
+                                      };
+                                      dispatch(setTmpFigure(regularPolygon));
+                                  }}
+                                  autoFocus={true}/>
+                </Form.Group>
+                <Form.Group as={Col} md="10">
+                    <Form.Label>Color Figure</Form.Label>
+                    <ChromePicker
+                        color={tmpColor}
+                        disableAlpha={true}
+                        onChange={(color: any) => {
+                            regularPolygon = {
+                                id: undefined,
+                                type: REGULARPOLYGON,
+                                color: color.hex.toString(),
+                                sides: tmpSides,
+                                radius: tmpRadius,
+                            };
+                            dispatch(setTmpFigure(regularPolygon));
+                        }}
+                    />
+                </Form.Group>
+            </Form>
+
             <div>
-
-                <Form>
-                    <Form.Group as={Col} md="10">
-                        <Form.Label>Sides: </Form.Label>
-                        <Form.Control type="number"
-                                      min="0"
-                                      placeholder="Enter sides"
-                                      onChange={(event: any) => {
-                                          this.setState(
-                                              {sides : parseInt(event.target.value)});
-                                      }}
-                                      autoFocus={true}/>
-                    </Form.Group>
-                    <Form.Group as={Col} md="10">
-                        <Form.Label>Radius: (max 150)</Form.Label>
-                        <Form.Control type="number"
-                                      min="0"
-                                      max="150"
-                                      placeholder="Enter a radius"
-                                      onChange={(event: any) => {
-                                          let number = parseInt(event.target.value);
-                                          if (number>150){
-                                              number = 150;
-                                          }
-                                          this.setState(
-                                              {radius : number});
-                                      }}
-                                      />
-                    </Form.Group>
-                    <Form.Group as={Col} md="10">
-                        <Form.Label>Color Figure</Form.Label>
-                        <ChromePicker
-                            color={this.state.color}
-                            disableAlpha={true}
-                            onChange={(color: any) => {
-                                this.setState({color: color.hex.toString()});
-                            }}
-                        />
-                    </Form.Group>
-                </Form>
-
-
-                <div>
-                    <MyRegularPolygon sides={this.state.sides}
-                                      radius={this.state.radius}
-                                      color={this.state.color}/>
-                    <Button variant="primary"
-                            onClick={() => {
-                                figure.color = this.state.color;
-                                figure.sides = this.state.sides;
-                                figure.radius = this.state.radius;
-                                dispatch(fetchFigure(figure));
-                            }}>
-                        Save
-                    </Button>
-                </div>
-
+                <MyRegularPolygon sides={regularPolygon.sides}
+                                  radius={regularPolygon.radius}
+                                  color={regularPolygon.color}/>
+                <Button variant="primary"
+                        onClick={() => {
+                            dispatch(fetchFigure(regularPolygon));
+                        }}>
+                    Save
+                </Button>
             </div>
-        );
-    }
 
-}
+        </div>
+    );
+};
 
-export default CreateRegularPolygon;
+const mapStateToProps= (state: AppState) => ({
+    tmpFigure: state.getTmpFigure,
+});
+
+export default connect (mapStateToProps)(CreateRegularPolygon);

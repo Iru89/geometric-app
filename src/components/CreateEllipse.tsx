@@ -6,101 +6,123 @@ import MyEllipse from "./MyEllipse";
 import {ChromePicker} from "react-color";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
+import {TmpFigureState} from "../types";
+import {AppState} from "../redux/store/indexStore";
+import {connect} from "react-redux";
+import {setTmpFigure} from "../redux/actions/editFigureActions";
 
 interface IProps {
+    tmpFigure: TmpFigureState,
     dispatch: ThunkDispatch<any, any, AnyAction>,
 }
 
-interface IState {
-    color: string,
-    radiusX: number,
-    radiusY: number,
-}
+const CreateEllipse: React.FunctionComponent <IProps> = (props: IProps) => {
 
-class CreateEllipse extends React.Component<IProps, IState> {
+    const {tmpFigure, dispatch} = props;
 
-    constructor(props: IProps) {
-        super(props);
-        this.state = {
-            color: "",
-            radiusX: 0,
-            radiusY: 0,
-        }
+    let tmpRadiusX = 0;
+    let tmpRadiusY = 0;
+    if(tmpFigure.figure.type === ELLIPSE && tmpFigure.figure.radiusX !== null && tmpFigure.figure.radiusY !== null){
+        tmpRadiusX = tmpFigure.figure.radiusX;
+        tmpRadiusY = tmpFigure.figure.radiusY;
     }
 
-    render(): React.ReactNode {
+    let tmpColor = "";
+    if(tmpFigure.figure.color !== ""){
+        tmpColor = tmpFigure.figure.color;
+    }
 
-        const {dispatch} = this.props;
+    let ellipse: Ellipse = {
+        id: undefined,
+        type: ELLIPSE,
+        color: tmpColor,
+        radiusX: tmpRadiusX,
+        radiusY: tmpRadiusY,
+    };
 
-        const figure: Ellipse = {
-            id: undefined,
-            type: ELLIPSE,
-            color: "",
-            radiusX: 0,
-            radiusY: 0,
-        };
+    return (
+        <div>
+            <Form>
+                <Form.Group as={Col} md="10">
+                    <Form.Label>Radius X: (max150)</Form.Label>
+                    <Form.Control type= "number"
+                                  min = "0"
+                                  max="150"
+                                  placeholder = "Enter radius X"
+                                  onChange={(event: any) => {
+                                      let number = parseInt(event.target.value);
+                                      if (number>150){
+                                          number = 150;
+                                      }
+                                      ellipse = {
+                                          id: undefined,
+                                          type: ELLIPSE,
+                                          color: tmpColor,
+                                          radiusX: number,
+                                          radiusY: tmpRadiusY,
+                                      };
+                                      dispatch(setTmpFigure(ellipse));
+                                  }}
+                                  autoFocus={true}/>
+                </Form.Group>
+                <Form.Group as={Col} md="10">
+                    <Form.Label>Radius Y: </Form.Label>
+                    <Form.Control type= "number"
+                                  min = "0"
+                                  max = "150"
+                                  placeholder = "Enter a radius Y"
+                                  onChange = {(event: any) => {
+                                      let number = parseInt(event.target.value);
+                                      if (number>150){
+                                          number = 150;
+                                      }
+                                      ellipse = {
+                                          id: undefined,
+                                          type: ELLIPSE,
+                                          color: tmpColor,
+                                          radiusX: tmpRadiusX,
+                                          radiusY: number,
+                                      };
+                                      dispatch(setTmpFigure(ellipse));
+                                  }}
+                    />
+                </Form.Group>
+                <Form.Group as={Col} md="10">
+                    <Form.Label>Color Figure</Form.Label>
+                    <ChromePicker
+                        color={tmpColor}
+                        disableAlpha={true}
+                        onChange={(color: any) => {
+                            ellipse = {
+                                id: undefined,
+                                type: ELLIPSE,
+                                color: color.hex.toString(),
+                                radiusX: tmpRadiusX,
+                                radiusY: tmpRadiusY,
+                            };
+                            dispatch(setTmpFigure(ellipse));
+                        }}
+                    />
+                </Form.Group>
+            </Form>
 
-        return (
             <div>
-                <Form>
-                    <Form.Group as={Col} md="10">
-                        <Form.Label>Radius X: (max150)</Form.Label>
-                        <Form.Control type= "number"
-                                      min = "0"
-                                      max="150"
-                                      placeholder = "Enter radius X"
-                                      onChange={(event: any) => {
-                                          let number = parseInt(event.target.value);
-                                          if (number>150){
-                                              number = 150;
-                                          }
-                                          this.setState(
-                                              {radiusX : number});
-                                      }}
-                                      autoFocus={true}/>
-                    </Form.Group>
-                    <Form.Group as={Col} md="10">
-                        <Form.Label>Radius Y: </Form.Label>
-                        <Form.Control type= "number"
-                                      min = "0"
-                                      placeholder = "Enter a radius Y"
-                                      onChange = {(event: any) => {
-                                          this.setState(
-                                              {radiusY : parseInt(event.target.value)});
-                                      }}
-                        />
-                    </Form.Group>
-                    <Form.Group as={Col} md="10">
-                        <Form.Label>Color Figure</Form.Label>
-                        <ChromePicker
-                            color={this.state.color}
-                            disableAlpha={true}
-                            onChange={(color: any) => {
-                                this.setState({color: color.hex.toString()});
-                            }}
-                        />
-                    </Form.Group>
-                </Form>
-
-                <div>
-                    <MyEllipse radiusX={this.state.radiusX}
-                               radiusY={this.state.radiusY}
-                               color={this.state.color}/>
-                    <Button variant="primary"
-                            onClick={() => {
-                                figure.color = this.state.color;
-                                figure.radiusX = this.state.radiusX;
-                                figure.radiusY = this.state.radiusY;
-                                dispatch(fetchFigure(figure));
-                            }}>
-                        Save
-                    </Button>
-                </div>
-
+                <MyEllipse radiusX={ellipse.radiusX}
+                           radiusY={ellipse.radiusY}
+                           color={ellipse.color}/>
+                <Button variant="primary"
+                        onClick={() => {
+                            dispatch(fetchFigure(ellipse));
+                        }}>
+                    Save
+                </Button>
             </div>
-        );
-    }
 
-}
+        </div>
+    );
+};
+const mapStateToProps= (state: AppState) => ({
+    tmpFigure: state.getTmpFigure,
+});
 
-export default CreateEllipse;
+export default connect (mapStateToProps)(CreateEllipse);

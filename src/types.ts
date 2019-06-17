@@ -16,6 +16,11 @@ export interface FilterState {
     visibilityFilter: string,
 }
 
+export interface TmpFigureState {
+    selectType: string
+    figure: Figure,
+}
+
 export interface ListFiguresState {
     isFetching: boolean,
     listFigures: Figure[],

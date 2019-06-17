@@ -4,46 +4,49 @@ import CreateRect from "./CreateRect";
 import {CIRCLE, ELLIPSE, RECT, REGULARPOLYGON} from "../typeFigures";
 import CreateRegularPolygon from "./CreateRegularPolygon";
 import CreateEllipse from "./CreateEllipse";
-import {ThunkDispatch} from "redux-thunk";
-import {AnyAction} from "redux";
+import {AppState} from "../redux/store/indexStore";
+import {connect} from "react-redux";
+import {TmpFigureState} from "../types";
 
 interface IProps {
-    type: string,
-    dispatch: ThunkDispatch<any, any, AnyAction>,
+    tmpFigure: TmpFigureState,
 }
 
 const GeometricValues: React.FunctionComponent<IProps> = (props:IProps) => {
 
-        const {type, dispatch} = props;
+        const {tmpFigure} = props;
 
-        switch (type) {
+        switch (tmpFigure.selectType) {
             case CIRCLE:
                 return(
                     <div>
-                        <CreateCircle dispatch={dispatch}/>
+                        <CreateCircle/>
                     </div>
                 );
             case RECT:
                 return(
                     <div>
-                        <CreateRect dispatch={dispatch}/>
+                        <CreateRect/>
                     </div>
                 );
             case REGULARPOLYGON:
                 return(
                     <div>
-                        <CreateRegularPolygon dispatch={dispatch}/>
+                        <CreateRegularPolygon/>
                     </div>
                 );
             case ELLIPSE:
                 return(
                     <div>
-                        <CreateEllipse dispatch={dispatch}/>
+                        <CreateEllipse/>
                     </div>
                 );
             default:
                 return null;
         }
 };
+const mapStateToProps= (state: AppState) => ({
+    tmpFigure: state.getTmpFigure,
+});
 
-export default GeometricValues;
+export default connect (mapStateToProps)(GeometricValues);

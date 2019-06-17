@@ -7,34 +7,35 @@ import {ChromePicker} from 'react-color';
 import '../styles/App.css';
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
+import {setTmpFigure} from "../redux/actions/editFigureActions";
+import {AppState} from "../redux/store/indexStore";
+import {connect} from "react-redux";
+import {TmpFigureState} from "../types";
 
 interface IProps {
+    tmpFigure: TmpFigureState,
     dispatch: ThunkDispatch<any, any, AnyAction>,
 }
 
-interface IState {
-    color: string,
-    radius: number,
-}
+const CreateCircle: React.FunctionComponent <IProps> = (props: IProps) => {
 
-class CreateCircle extends React.Component<IProps, IState>{
-    constructor(props: IProps){
-        super(props);
-        this.state = {
-            color: "",
-            radius: 0,
+        const {tmpFigure, dispatch} = props;
+
+        let tmpRadius = 0;
+        if(tmpFigure.figure.type === CIRCLE && tmpFigure.figure.radius !== null){
+            tmpRadius = tmpFigure.figure.radius;
         }
-    }
 
-    render(): React.ReactNode {
+        let tmpColor = "";
+        if(tmpFigure.figure.color !== ""){
+            tmpColor = tmpFigure.figure.color;
+        }
 
-        const {dispatch} = this.props;
-
-        const figure: Circle = {
+        let circle: Circle = {
             id: undefined,
             type: CIRCLE,
-            color: "",
-            radius: 0,
+            color: tmpColor,
+            radius: tmpRadius,
         };
 
         return (
@@ -51,30 +52,39 @@ class CreateCircle extends React.Component<IProps, IState>{
                                           if (number>150){
                                               number = 150;
                                           }
-                                          this.setState(
-                                              {radius : number});
+                                          circle = {
+                                              id: undefined,
+                                              type: CIRCLE,
+                                              color: tmpFigure.figure.color,
+                                              radius: number,
+                                          };
+                                          dispatch(setTmpFigure(circle));
                                       }}
                                       autoFocus={true}/>
                     </Form.Group >
                     <Form.Group as={Col} md="10">
                         <Form.Label>Color Figure</Form.Label>
                             <ChromePicker
-                                color={this.state.color}
+                                color ={tmpColor}
                                 disableAlpha={true}
                                 onChange={(color: any) => {
-                                    this.setState({color: color.hex.toString()});
+                                    circle = {
+                                        id: undefined,
+                                        type: CIRCLE,
+                                        color: color.hex.toString(),
+                                        radius: tmpRadius
+                                    };
+                                    dispatch(setTmpFigure(circle))
                                 }}
                             />
                     </Form.Group>
                 </Form>
 
                 <div>
-                    <MyCircle radius={this.state.radius} color={this.state.color}/>
+                    <MyCircle radius={circle.radius} color={circle.color}/>
                     <Button variant="primary"
                             onClick={() => {
-                                figure.color = this.state.color;
-                                figure.radius = this.state.radius;
-                                dispatch(fetchFigure(figure));
+                                dispatch(fetchFigure(circle));
                             }}>
                         Save
                     </Button>
@@ -82,7 +92,10 @@ class CreateCircle extends React.Component<IProps, IState>{
 
             </div>
         );
-    }
-}
+    // }
+};
+const mapStateToProps= (state: AppState) => ({
+    tmpFigure: state.getTmpFigure,
+});
 
-export default CreateCircle;
+export default connect (mapStateToProps)(CreateCircle);
