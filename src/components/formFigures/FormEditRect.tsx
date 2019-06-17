@@ -1,14 +1,12 @@
-import * as React from 'react';
-import MyRect from "./MyRect";
-import {Button, Col, Form} from "react-bootstrap";
-import {fetchFigure} from "../redux/actions/addFigureActions";
-import {Rect, RECT} from "../typeFigures";
-import {ChromePicker} from "react-color";
+import {TmpFigureState} from "../../types";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
-import {TmpFigureState} from "../types";
-import {setTmpFigure} from "../redux/actions/editFigureActions";
-import {AppState} from "../redux/store/indexStore";
+import * as React from "react";
+import {Rect, RECT} from "../../typeFigures";
+import {Form, Col} from "react-bootstrap";
+import {setTmpFigure} from "../../redux/actions/editFigureActions";
+import {ChromePicker} from "react-color";
+import {AppState} from "../../redux/store/indexStore";
 import {connect} from "react-redux";
 
 interface IProps {
@@ -16,25 +14,25 @@ interface IProps {
     dispatch: ThunkDispatch<any, any, AnyAction>,
 }
 
-const CreateRect: React.FunctionComponent <IProps> = (props: IProps) => {
+const FormEditRect: React.FunctionComponent <IProps> = (props: IProps) => {
 
     const {tmpFigure, dispatch} = props;
 
     let tmpWidth = 0;
     let tmpHeight = 0;
-    if(tmpFigure.figure.type === RECT && tmpFigure.figure.width !== null && tmpFigure.figure.height !== null){
+    if (tmpFigure.figure.type === RECT && tmpFigure.figure.width !== null && tmpFigure.figure.height !== null) {
         tmpWidth = tmpFigure.figure.width;
         tmpHeight = tmpFigure.figure.height;
     }
 
     let tmpColor = "";
-    if(tmpFigure.figure.color !== ""){
+    if (tmpFigure.figure.color !== "") {
         tmpColor = tmpFigure.figure.color;
     }
 
 
     let rect: Rect = {
-        id: undefined,
+        id: tmpFigure.figure.id,
         type: RECT,
         color: tmpColor,
         width: tmpWidth,
@@ -46,18 +44,18 @@ const CreateRect: React.FunctionComponent <IProps> = (props: IProps) => {
 
             <Form>
                 <Form.Group as={Col} md="10">
-                    <Form.Label >Width: (max 150)</Form.Label>
+                    <Form.Label>Width: (max 150)</Form.Label>
                     <Form.Control type="number"
                                   min="0"
-                                  max = "150"
+                                  max="150"
                                   placeholder="Enter a width"
                                   onChange={(event: any) => {
                                       let number = parseInt(event.target.value);
-                                      if (number>150){
+                                      if (number > 150) {
                                           number = 150;
                                       }
-                                      rect= {
-                                          id: undefined,
+                                      rect = {
+                                          id: tmpFigure.figure.id,
                                           type: RECT,
                                           color: tmpColor,
                                           width: number,
@@ -65,21 +63,21 @@ const CreateRect: React.FunctionComponent <IProps> = (props: IProps) => {
                                       };
                                       dispatch(setTmpFigure(rect));
                                   }}
-                                  autoFocus={true} />
+                                  autoFocus={true}/>
                 </Form.Group>
                 <Form.Group as={Col} md="10">
                     <Form.Label>Height: (max 150)</Form.Label>
-                    <Form.Control type = "number"
+                    <Form.Control type="number"
                                   min="0"
-                                  max = "150"
+                                  max="150"
                                   placeholder="Enter a height"
                                   onChange={(event: any) => {
                                       let number = parseInt(event.target.value);
-                                      if (number>150){
+                                      if (number > 150) {
                                           number = 150;
                                       }
-                                      rect= {
-                                          id: undefined,
+                                      rect = {
+                                          id: tmpFigure.figure.id,
                                           type: RECT,
                                           color: tmpColor,
                                           width: tmpWidth,
@@ -87,15 +85,15 @@ const CreateRect: React.FunctionComponent <IProps> = (props: IProps) => {
                                       };
                                       dispatch(setTmpFigure(rect));
                                   }}/>
-                </Form.Group >
+                </Form.Group>
                 <Form.Group as={Col} md="10">
                     <Form.Label>Color Figure</Form.Label>
                     <ChromePicker
                         color={tmpColor}
                         disableAlpha={true}
                         onChange={(color: any) => {
-                            rect= {
-                                id: undefined,
+                            rect = {
+                                id: tmpFigure.figure.id,
                                 type: RECT,
                                 color: color.hex.toString(),
                                 width: tmpWidth,
@@ -106,16 +104,6 @@ const CreateRect: React.FunctionComponent <IProps> = (props: IProps) => {
                     />
                 </Form.Group>
             </Form>
-
-            <div>
-                <MyRect width={rect.width} height={rect.height} color={rect.color}/>
-                <Button variant="primary"
-                        onClick={() => {
-                            dispatch(fetchFigure(rect));
-                        }}>
-                    Save
-                </Button>
-            </div>
         </div>
     );
 };
@@ -124,4 +112,4 @@ const mapStateToProps= (state: AppState) => ({
     tmpFigure: state.getTmpFigure,
 });
 
-export default connect (mapStateToProps)(CreateRect);
+export default connect (mapStateToProps)(FormEditRect);

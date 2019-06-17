@@ -7,7 +7,7 @@ import {
     SHOW_LIST,
     SHOW_LOGIN,
     SHOW_PROFILE,
-    SHOW_SIGNUP
+    SHOW_SIGNUP, SHOW_UPDATE_FIGURE
 } from "../redux/types/visibilityFilterTypes";
 import FigureList from "./FigureList";
 import CreateFigure from "./CreateFigure";
@@ -17,6 +17,7 @@ import {AnyAction} from "redux";
 import {ThunkDispatch} from "redux-thunk";
 import {AppState} from "../redux/store/indexStore";
 import {connect} from "react-redux";
+import UpdateFigure from "./UpdateFigure";
 
 
 interface IProps{
@@ -68,14 +69,22 @@ const Main: React.FunctionComponent<IProps> = (props: IProps) => {
                     <hr/>
                 </div>
             );
-            case SHOW_PROFILE:
-                return(
-                    <div>
-                        <hr/>
-                        <Profile/>
-                        <hr/>
-                    </div>
-                );
+        case SHOW_UPDATE_FIGURE:
+            return(
+                <div>
+                    <hr/>
+                    <UpdateFigure/>
+                    <hr/>
+                </div>
+            );
+        case SHOW_PROFILE:
+            return(
+                <div>
+                    <hr/>
+                    <Profile/>
+                    <hr/>
+                </div>
+            );
         default:
             return null;
     }

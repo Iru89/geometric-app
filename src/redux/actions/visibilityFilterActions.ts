@@ -5,7 +5,7 @@ import {
     SHOW_LOGIN,
     SHOW_SIGNUP,
     SHOW_PROFILE,
-    VisibilityFilterActions
+    VisibilityFilterActions, SHOW_UPDATE_FIGURE
 } from "../types/visibilityFilterTypes";
 
 
@@ -41,5 +41,12 @@ export function showProfile(): VisibilityFilterActions {
     return {
         type: SET_VISIBILITY_FILTER,
         visibilityFilter: SHOW_PROFILE,
+    }
+}
+
+export function showUpdateFigure(): VisibilityFilterActions {
+    return {
+        type: SET_VISIBILITY_FILTER,
+        visibilityFilter: SHOW_UPDATE_FIGURE,
     }
 }

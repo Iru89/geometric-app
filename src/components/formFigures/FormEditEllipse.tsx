@@ -1,22 +1,20 @@
-import * as React from 'react';
-import {Button, Col, Form} from "react-bootstrap";
-import {fetchFigure} from "../redux/actions/addFigureActions";
-import {Ellipse, ELLIPSE} from "../typeFigures";
-import MyEllipse from "./MyEllipse";
+import {Ellipse, ELLIPSE} from "../../typeFigures";
+import {Form, Col} from "react-bootstrap";
+import {setTmpFigure} from "../../redux/actions/editFigureActions";
 import {ChromePicker} from "react-color";
+import * as React from "react";
+import {TmpFigureState} from "../../types";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
-import {TmpFigureState} from "../types";
-import {AppState} from "../redux/store/indexStore";
+import {AppState} from "../../redux/store/indexStore";
 import {connect} from "react-redux";
-import {setTmpFigure} from "../redux/actions/editFigureActions";
 
 interface IProps {
     tmpFigure: TmpFigureState,
     dispatch: ThunkDispatch<any, any, AnyAction>,
 }
 
-const CreateEllipse: React.FunctionComponent <IProps> = (props: IProps) => {
+const FormEditEllipse: React.FunctionComponent <IProps> = (props: IProps) => {
 
     const {tmpFigure, dispatch} = props;
 
@@ -33,7 +31,7 @@ const CreateEllipse: React.FunctionComponent <IProps> = (props: IProps) => {
     }
 
     let ellipse: Ellipse = {
-        id: undefined,
+        id: tmpFigure.figure.id,
         type: ELLIPSE,
         color: tmpColor,
         radiusX: tmpRadiusX,
@@ -55,7 +53,7 @@ const CreateEllipse: React.FunctionComponent <IProps> = (props: IProps) => {
                                           number = 150;
                                       }
                                       ellipse = {
-                                          id: undefined,
+                                          id: tmpFigure.figure.id,
                                           type: ELLIPSE,
                                           color: tmpColor,
                                           radiusX: number,
@@ -77,7 +75,7 @@ const CreateEllipse: React.FunctionComponent <IProps> = (props: IProps) => {
                                           number = 150;
                                       }
                                       ellipse = {
-                                          id: undefined,
+                                          id: tmpFigure.figure.id,
                                           type: ELLIPSE,
                                           color: tmpColor,
                                           radiusX: tmpRadiusX,
@@ -94,7 +92,7 @@ const CreateEllipse: React.FunctionComponent <IProps> = (props: IProps) => {
                         disableAlpha={true}
                         onChange={(color: any) => {
                             ellipse = {
-                                id: undefined,
+                                id: tmpFigure.figure.id,
                                 type: ELLIPSE,
                                 color: color.hex.toString(),
                                 radiusX: tmpRadiusX,
@@ -105,24 +103,12 @@ const CreateEllipse: React.FunctionComponent <IProps> = (props: IProps) => {
                     />
                 </Form.Group>
             </Form>
-
-            <div>
-                <MyEllipse radiusX={ellipse.radiusX}
-                           radiusY={ellipse.radiusY}
-                           color={ellipse.color}/>
-                <Button variant="primary"
-                        onClick={() => {
-                            dispatch(fetchFigure(ellipse));
-                        }}>
-                    Save
-                </Button>
-            </div>
-
         </div>
     );
 };
+
 const mapStateToProps= (state: AppState) => ({
     tmpFigure: state.getTmpFigure,
 });
 
-export default connect (mapStateToProps)(CreateEllipse);
+export default connect (mapStateToProps)(FormEditEllipse);

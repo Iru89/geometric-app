@@ -1,44 +1,39 @@
 import {
-    GeometricListActions,
-    SAVE_FIGURE_ERROR,
-    SAVE_FIGURE_REQUEST,
-    SAVE_FIGURE_SUCCESS,
+    GeometricListActions, UPDATE_FIGURE_ERROR, UPDATE_FIGURE_REQUEST, UPDATE_FIGURE_SUCCESS,
+
 } from "../types/geometricListTypes";
+import {Figure} from "../../typeFigures";
 import {ThunkAction} from "redux-thunk";
 import {AppState} from "../store/indexStore";
 import {Action} from "redux";
 import {updateTokens} from "../jwtUtilities";
-import {Figure} from "../../typeFigures";
-import {showList} from "./visibilityFilterActions";
 import {resetTmpFigure} from "./editFigureActions";
+import {showList} from "./visibilityFilterActions";
 
-
-function requestSaveFigure(): GeometricListActions {
+function requestUpdateFigure(): GeometricListActions {
     return {
-        type: SAVE_FIGURE_REQUEST,
+        type: UPDATE_FIGURE_REQUEST,
         isFetching: true,
     }
 }
 
-function successSaveFigure(figure: Figure): GeometricListActions {
+function successUpdateFigure(figure: Figure): GeometricListActions {
     return {
-        type: SAVE_FIGURE_SUCCESS,
+        type: UPDATE_FIGURE_SUCCESS,
         isFetching: false,
         figure,
     }
 }
 
-function errorSaveFigure(message: string): GeometricListActions {
+function errorUpdateFigure(message: string): GeometricListActions {
     return {
-        type: SAVE_FIGURE_ERROR,
+        type: UPDATE_FIGURE_ERROR,
         isFetching: false,
         message,
     }
 }
 
-
-
-export function fetchFigure(figure: Figure): ThunkAction<void, AppState, null, Action<string>> {
+export function fetchUpdateFigure(figure: Figure): ThunkAction<void, AppState, null, Action<string>> {
 
     return async (dispatch: any) => {
 
@@ -51,7 +46,7 @@ export function fetchFigure(figure: Figure): ThunkAction<void, AppState, null, A
         };
 
         let config: RequestInit = {
-            method: 'POST',
+            method: 'PUT',
             mode: 'cors',
             headers: {
                 'Authorization': authHeader,
@@ -60,16 +55,16 @@ export function fetchFigure(figure: Figure): ThunkAction<void, AppState, null, A
             body: JSON.stringify(json),
         };
 
-        dispatch(requestSaveFigure());
+        dispatch(requestUpdateFigure());
 
         const response = await fetch('http://localhost:8081/api/geometric/figure', config);
 
         if (!response.ok) {
-             const text = await response.text();
-             dispatch(errorSaveFigure(text));
+            const text = await response.text();
+            dispatch(errorUpdateFigure(text));
         } else {
-            const figureWithId: any = await response.json();
-            dispatch(successSaveFigure(figureWithId));
+            const figureResponse: Figure = await response.json();
+            dispatch(successUpdateFigure(figureResponse));
             dispatch(resetTmpFigure());
             dispatch(showList());
         }

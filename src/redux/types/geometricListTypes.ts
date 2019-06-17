@@ -66,7 +66,30 @@ export interface DeleteFigureError extends Action{
     message: string,
 }
 
+export const UPDATE_FIGURE_REQUEST = 'UPDATE_FIGURE_REQUEST';
+export const UPDATE_FIGURE_SUCCESS = 'UPDATE_FIGURE_SUCCESS';
+export const UPDATE_FIGURE_ERROR = 'UPDATE_FIGURE_ERROR';
+
+export interface UpdateFigureRequest extends Action{
+    type: typeof UPDATE_FIGURE_REQUEST,
+    isFetching: boolean,
+}
+
+
+export interface UpdateFigureSuccess extends Action{
+    type: typeof UPDATE_FIGURE_SUCCESS,
+    isFetching: boolean,
+    figure: Figure
+}
+
+export interface UpdateFigureError extends Action{
+    type: typeof UPDATE_FIGURE_ERROR,
+    isFetching: boolean,
+    message: string,
+}
+
 export type GeometricListActions =
     IListRequest | IListSuccess | IListError |
     SaveFigureRequest | SaveFigureSuccess | SaveFigureError |
-    DeleteFigureRequest | DeleteFigureSuccess | DeleteFigureError;
+    DeleteFigureRequest | DeleteFigureSuccess | DeleteFigureError |
+    UpdateFigureRequest | UpdateFigureSuccess | UpdateFigureError;

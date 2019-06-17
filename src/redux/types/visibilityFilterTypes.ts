@@ -7,6 +7,7 @@ export const  SHOW_SIGNUP: string = 'SHOW_SIGNUP';
 export const SHOW_LIST: string = 'SHOW_LIST';
 export const SHOW_CREATE_FIGURE: string = 'SHOW_CREATE_FIGURE';
 export const SHOW_PROFILE: string = 'SHOW_PROFILE';
+export const SHOW_UPDATE_FIGURE: string = 'SHOW_UPDATE_FIGURE';
 
 export interface IVisibilityFilter extends Action{
     type: typeof SET_VISIBILITY_FILTER,

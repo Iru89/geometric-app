@@ -1,9 +1,9 @@
 import * as React from 'react';
-import MyCircle from "./MyCircle";
-import MyRect from "./MyRect";
+import MyCircle from "./myFigures/MyCircle";
+import MyRect from "./myFigures/MyRect";
 import {Figure, CIRCLE, RECT, REGULARPOLYGON, ELLIPSE} from "../typeFigures";
-import MyRegularPolygon from "./MyRegularPolygon";
-import MyEllipse from "./MyEllipse";
+import MyRegularPolygon from "./myFigures/MyRegularPolygon";
+import MyEllipse from "./myFigures/MyEllipse";
 
 interface IProps {
     figure: Figure

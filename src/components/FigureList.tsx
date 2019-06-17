@@ -9,6 +9,8 @@ import {AppState} from "../redux/store/indexStore";
 import {connect} from "react-redux";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
+import {setTmpFigure, setType} from "../redux/actions/editFigureActions";
+import {showUpdateFigure} from "../redux/actions/visibilityFilterActions";
 
 interface IProps {
     geometricListState: ListFiguresState,
@@ -27,9 +29,22 @@ const FigureList: React.FunctionComponent<IProps> = (props: IProps) => {
                 {listFigures.map((figure: Figure) =>
                     <div key={figure.id}>
                         <FigureItem figure={figure}/>
+
                         <Button variant="primary" onClick={() => dispatch(fetchDeleteFigure(figure.id))}>
                             Delete
                         </Button>
+                        <br/>
+                        <br/>
+                        <Button variant="primary" onClick={() => {
+                            // console.log(figure.id);
+                            dispatch(setType(figure.type));
+                            dispatch(setTmpFigure(figure));
+                            dispatch(showUpdateFigure())
+                        }}>
+                            Edit
+                        </Button>
+                        <br/>
+                        <br/>
                     </div> )
                 }
             </ul>

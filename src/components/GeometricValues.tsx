@@ -1,9 +1,9 @@
 import * as React from 'react';
-import CreateCircle from "./CreateCircle";
-import CreateRect from "./CreateRect";
+import CreateCircle from "./createFigures/CreateCircle";
+import CreateRect from "./createFigures/CreateRect";
+import CreateRegularPolygon from "./createFigures/CreateRegularPolygon";
+import CreateEllipse from "./createFigures/CreateEllipse";
 import {CIRCLE, ELLIPSE, RECT, REGULARPOLYGON} from "../typeFigures";
-import CreateRegularPolygon from "./CreateRegularPolygon";
-import CreateEllipse from "./CreateEllipse";
 import {AppState} from "../redux/store/indexStore";
 import {connect} from "react-redux";
 import {TmpFigureState} from "../types";
@@ -12,7 +12,7 @@ interface IProps {
     tmpFigure: TmpFigureState,
 }
 
-const GeometricValues: React.FunctionComponent<IProps> = (props:IProps) => {
+const CreateGeometricValues: React.FunctionComponent<IProps> = (props:IProps) => {
 
         const {tmpFigure} = props;
 
@@ -49,4 +49,4 @@ const mapStateToProps= (state: AppState) => ({
     tmpFigure: state.getTmpFigure,
 });
 
-export default connect (mapStateToProps)(GeometricValues);
+export default connect (mapStateToProps)(CreateGeometricValues);

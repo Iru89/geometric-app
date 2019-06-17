@@ -5,7 +5,7 @@ import {
     LIST_ERROR,
     LIST_REQUEST,
     LIST_SUCCESS, SAVE_FIGURE_ERROR, SAVE_FIGURE_REQUEST,
-    SAVE_FIGURE_SUCCESS
+    SAVE_FIGURE_SUCCESS, UPDATE_FIGURE_ERROR, UPDATE_FIGURE_REQUEST, UPDATE_FIGURE_SUCCESS
 } from "../types/geometricListTypes";
 import {ListFiguresState} from "../../types";
 import {Figure} from "../../typeFigures";
@@ -61,6 +61,24 @@ export function setGeometricList(state = initialGeometricList, action: Geometric
             return Object.assign({}, state,{
                 isFetching: action.isFetching,
                 message: action.message
+            });
+        case UPDATE_FIGURE_REQUEST:
+            return Object.assign({}, state, {
+                isFetchinge: action.isFetching
+            });
+        case UPDATE_FIGURE_SUCCESS:
+            return Object.assign({}, state, {
+                isFetchinge: action.isFetching,
+                listFigures: state.listFigures.map((f) => {
+                    if(f.id === action.figure.id) {
+                         return action.figure
+                    }
+                    return f;
+                })
+            });
+        case UPDATE_FIGURE_ERROR:
+            return Object.assign({}, state, {
+                isFetchinge: action.isFetching
             });
         default:
             return state;
